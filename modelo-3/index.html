@@ -8,9 +8,9 @@
 <meta name="theme-color" content="#006eb5">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500;700&family=Nunito:wght@300;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Barlow:wght@400;500;600&family=Nunito:wght@300;800&display=swap">
 <style>
-/* Identidade: paleta e fontes do site VistoriaPro (azul #006eb5, tinta #0d1b2a, Barlow + JetBrains Mono);
+/* Identidade: paleta e fontes do site VistoriaPro (azul #006eb5, tinta #0d1b2a, Barlow);
    verde Compuletra #006e38 só na assinatura e na categoria Segurança.
    Duas telas: Início (app + categorias + treino) e Modalidade (#nome-da-modalidade). Tema único claro. */
 :root {
@@ -33,7 +33,7 @@
   --disc-b: #c9d0d8;
   --display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
   --body: "Barlow", "Segoe UI", system-ui, sans-serif;
-  --mono: "JetBrains Mono", Consolas, monospace;
+  --mono: "Barlow", "Segoe UI", system-ui, sans-serif; /* números e contagens: mesma família, algarismos alinhados */
   color-scheme: light;
 }
 .ea { --c: var(--ink-2); --c-t: #e6ebf0; }
@@ -53,14 +53,14 @@ a { color: inherit; }
 :focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
 .ic { display: block; }
 .logo { display: block; height: 24px; width: auto; aspect-ratio: 2652 / 432; }
-.mono { font-family: var(--mono); font-size: .8em; letter-spacing: 0; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 .view { animation: enter .3s cubic-bezier(.2, .8, .2, 1) both; }
 @keyframes enter { from { opacity: 0; transform: translateX(24px); } }
 .view.back-in { animation-name: enter-back; }
 @keyframes enter-back { from { opacity: 0; transform: translateX(-24px); } }
 
 /* código da categoria: sigla na cor + número */
-.tag { display: inline-flex; flex: none; align-items: stretch; border-radius: 6px; overflow: hidden; font: 700 13px/1 var(--mono); box-shadow: inset 0 0 0 1.5px var(--c); vertical-align: middle; }
+.tag { display: inline-flex; flex: none; align-items: stretch; border-radius: 6px; overflow: hidden; font: 600 15px/1 var(--display); letter-spacing: .02em; box-shadow: inset 0 0 0 1.5px var(--c); vertical-align: middle; }
 .tag b { background: var(--c); color: #fff; padding: 5px 6px 5px 7px; font-weight: 700; }
 .tag i { font-style: normal; color: var(--c); background: var(--c-t); padding: 5px 7px 5px 6px; }
 .tag.lg { font-size: 20px; border-radius: 8px; box-shadow: inset 0 0 0 2px var(--c); }
@@ -76,9 +76,14 @@ a { color: inherit; }
 .bar :focus-visible, .d-bar :focus-visible, footer :focus-visible { outline-color: #fff; }
 
 /* herói */
-.hero-band { position: relative; color: #fff; background: radial-gradient(rgba(255, 255, 255, .12) 1px, transparent 1.3px) 0 0 / 22px 22px, radial-gradient(700px 360px at 88% 0%, rgba(56, 190, 255, .35), transparent 70%), linear-gradient(165deg, #0a3358 0%, #005a96 55%, #0a7cc6 100%); }
+.hero-band { position: relative; color: #fff; background: linear-gradient(160deg, #063a63 0%, #005a96 48%, #0072ba 100%); }
+/* textura do site VistoriaPro: grade de 60px que some nas bordas + brilho azul */
+.hero-band, .d-hero { position: relative; isolation: isolate; }
+.hero-band::before, .d-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background-image: linear-gradient(rgba(255, 255, 255, .1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .1) 1px, transparent 1px); background-size: 60px 60px; background-position: center top; -webkit-mask-image: radial-gradient(85% 75% at 60% 45%, #000 25%, transparent 85%); mask-image: radial-gradient(85% 75% at 60% 45%, #000 25%, transparent 85%); }
+.hero-band::after, .d-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(520px 420px at 78% 42%, rgba(40, 160, 235, .28), transparent 70%); }
+.d-hero::after { background: radial-gradient(480px 300px at 85% 30%, rgba(40, 160, 235, .25), transparent 70%); }
 .hero-band .kick { color: #cfe6f7; }
-.hero-band .hero h1 span { display: inline-block; background: linear-gradient(90deg, #5fd0ff, #b9ecff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero-band .hero h1 span { color: #8fd3ff; }
 /* aba branca com o logo, como no protótipo do Canva */
 .top { position: relative; display: flex; justify-content: center; }
 .tab { display: grid; place-items: center; background: #fff; padding: 18px clamp(28px, 6vw, 44px) 20px; border-radius: 0 0 26px 26px; box-shadow: 0 18px 30px -16px rgba(0, 20, 50, .6); }
@@ -95,7 +100,7 @@ a { color: inherit; }
 .hero-band .tag, .d-hero .tag { box-shadow: 0 0 0 2px #fff; }
 .hero-band :focus-visible { outline-color: #fff; }
 .hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; padding-block: 28px 56px; }
-.kick { font: 500 13px/1.3 var(--mono); color: var(--blue); }
+.kick { font: 500 14px/1.3 var(--body); color: var(--blue); }
 .hero h1 { font-size: clamp(2.6rem, 7.4vw, 4.3rem); line-height: .98; margin: 12px 0 18px; }
 .hero h1 span { color: var(--blue); }
 .lead { font-size: clamp(1.05rem, 2.2vw, 1.18rem); line-height: 1.55; color: var(--muted); max-width: 46ch; }
@@ -104,7 +109,7 @@ a { color: inherit; }
 .legend a { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 13px 2px; text-decoration: none; }
 .legend a:hover strong { color: var(--blue); }
 .legend strong { font-weight: 600; }
-.legend em { font: 500 13px/1 var(--mono); font-style: normal; color: var(--muted); }
+.legend em { font: 500 14px/1 var(--body); font-variant-numeric: tabular-nums; font-style: normal; color: var(--muted); }
 
 /* aparelho com a tela inicial do app */
 .phone { border-radius: 30px; padding: 7px; background: var(--ink); box-shadow: 0 26px 48px -26px rgba(4, 20, 40, .8); color: var(--ink); }
@@ -125,7 +130,7 @@ a { color: inherit; }
 .mod:active .disc { transform: scale(.95); }
 .lbl { font-size: 14.5px; line-height: 1.2; max-width: 11ch; min-height: 2.4em; color: var(--ink); }
 .mod:hover .lbl { color: var(--blue); }
-.badge { position: absolute; top: -3px; right: -10px; padding: 4px 7px; border-radius: 999px; background: var(--c); color: #fff; font: 700 11.5px/1 var(--mono); white-space: nowrap; box-shadow: 0 0 0 2.5px #fff; }
+.badge { position: absolute; top: -3px; right: -10px; padding: 4px 7px; border-radius: 999px; background: var(--c); color: #fff; font: 600 13px/1 var(--display); letter-spacing: .02em; white-space: nowrap; box-shadow: 0 0 0 2.5px #fff; }
 .disc.xl .badge { display: none; }
 .app-foot { display: flex; justify-content: space-between; gap: 10px; padding: 14px 18px 16px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); margin-top: 8px; }
 
@@ -155,11 +160,11 @@ h2 { font-size: clamp(2rem, 4.6vw, 2.75rem); line-height: 1.02; }
 @keyframes drop { from { opacity: 0; transform: translateY(-6px); } }
 @media (max-width: 559px) { .cat-h em { display: none; } .cat-h h3 { font-size: 1.35rem; } }
 .cat-h h3 { font-size: 1.6rem; line-height: 1.05; }
-.cat-h em { white-space: nowrap; font: 500 13px/1 var(--mono); font-style: normal; color: var(--muted); }
+.cat-h em { white-space: nowrap; font: 500 14px/1 var(--body); font-style: normal; color: var(--muted); }
 .svcs { list-style: none; margin: 0; padding: 0; }
 .svcs li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 4px 12px; padding: 14px 20px; align-items: start; }
 .svcs li + li { border-top: 1px solid var(--line); }
-.num { font: 700 15px/1.6 var(--mono); color: var(--c); font-variant-numeric: tabular-nums; }
+.num { font: 600 18px/1.3 var(--display); color: var(--c); font-variant-numeric: tabular-nums; }
 .svcs p { line-height: 1.45; }
 .chip { grid-column: 2; justify-self: start; margin-top: 6px; display: inline-flex; align-items: center; gap: 9px; padding: 4px 14px 4px 4px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); text-decoration: none; font: 600 14.5px/1.15 var(--body); transition: border-color .15s, background .15s; }
 .chip:hover { border-color: var(--blue); background: var(--tint); }
@@ -175,7 +180,7 @@ h2 { font-size: clamp(2rem, 4.6vw, 2.75rem); line-height: 1.02; }
 .quiz .sec-h :focus-visible { outline-color: #fff; }
 .quiz .wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
 .q { border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: grid; gap: 18px; background: var(--card); max-width: 680px; }
-.q-top { display: flex; justify-content: space-between; gap: 12px; font: 500 13px/1 var(--mono); color: var(--muted); }
+.q-top { display: flex; justify-content: space-between; gap: 12px; font: 500 14px/1 var(--body); font-variant-numeric: tabular-nums; color: var(--muted); }
 .q-bar { height: 4px; border-radius: 4px; background: var(--tint); overflow: hidden; }
 .q-bar span { display: block; height: 100%; background: var(--blue); transition: width .3s; }
 .q-mod { display: flex; align-items: center; gap: 16px; }
@@ -212,9 +217,9 @@ h2 { font-size: clamp(2rem, 4.6vw, 2.75rem); line-height: 1.02; }
 .back { display: inline-flex; align-items: center; gap: 4px; margin-left: -8px; padding: 8px 12px 8px 4px; border-radius: 6px; text-decoration: none; font: 600 16px/1 var(--body); }
 .back svg { width: 22px; height: 22px; }
 .back:hover { background: rgba(255, 255, 255, .14); }
-.d-bar .mono { font-size: 13px; color: #d5e8f6; }
+.d-bar .mono { font-size: 15px; color: #d5e8f6; }
 #detalhe { background: var(--tint); }
-.d-hero { color: #fff; background: radial-gradient(rgba(255, 255, 255, .12) 1px, transparent 1.3px) 0 0 / 22px 22px, radial-gradient(700px 360px at 88% 0%, rgba(56, 190, 255, .35), transparent 70%), linear-gradient(165deg, #0a3358 0%, #005a96 55%, #0a7cc6 100%); padding-block: 32px 40px; }
+.d-hero { color: #fff; background: linear-gradient(160deg, #063a63 0%, #005a96 48%, #0072ba 100%); padding-block: 32px 40px; }
 .d-hero-in { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 28px; }
 .d-hero-in > div { min-width: 0; flex: 1 1 260px; }
 .d-hero .kick { color: #cfe6f7; }
@@ -235,7 +240,7 @@ h2 { font-size: clamp(2rem, 4.6vw, 2.75rem); line-height: 1.02; }
 .d-list li a:hover { text-decoration: underline; }
 .d-list li a svg { width: 16px; height: 16px; }
 .d-list li.cur { background: var(--c-t); border-radius: 8px; border-bottom-color: transparent; box-shadow: 0 -1px 0 var(--c-t); }
-.d-list li .here { display: inline-block; margin-top: 6px; font: 700 12px/1 var(--mono); color: var(--c); }
+.d-list li .here { display: inline-block; margin-top: 6px; font: 600 14px/1 var(--body); color: var(--c); }
 .d-cats { display: grid; border-top: 1px solid var(--line); }
 .d-cats a { display: flex; align-items: center; gap: 12px; padding: 12px 2px; border-bottom: 1px solid var(--line); text-decoration: none; font-weight: 500; }
 .d-cats a:hover span:last-child { color: var(--blue); }
@@ -244,7 +249,7 @@ h2 { font-size: clamp(2rem, 4.6vw, 2.75rem); line-height: 1.02; }
 .pg { background: var(--card); display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; text-decoration: none; min-width: 0; transition: border-color .15s, background .15s; }
 .pg:hover { border-color: var(--blue); background: var(--tint); }
 .pg.next { flex-direction: row-reverse; text-align: right; }
-.pg small { display: block; font: 500 12px/1.3 var(--mono); color: var(--muted); }
+.pg small { display: block; font: 500 13px/1.3 var(--body); color: var(--muted); }
 .pg strong { display: block; font: 600 1.1rem/1.15 var(--display); overflow-wrap: anywhere; }
 .pg .disc { width: 42px; }
 .help { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 20px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); }
@@ -263,7 +268,7 @@ footer { position: relative; margin-top: -36px; border-radius: 36px 36px 0 0; ba
 .sign .logo { height: 22px; color: #fff; opacity: .85; margin: 0; }
 .foot { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; }
 footer .logo { color: #fff; margin-bottom: 14px; }
-footer h4 { font: 500 13px/1 var(--mono); color: var(--blue-l); margin-bottom: 12px; }
+footer h4 { font: 600 15px/1 var(--body); color: #8fb9da; margin-bottom: 12px; }
 footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
 footer a { color: #fff; font-weight: 600; text-decoration: none; }
 footer a:hover { text-decoration: underline; }
