@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modelos da landing page VistoriaPro SP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Barlow:wght@400;600&display=swap">
+<style>
+:root { --navy: #0b2a4a; --green: #00a651; --green-d: #007a3d; --ink: #12202d; --muted: #55636f; --line: #d9e1df; --paper: #f2f5f4; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.5 "Barlow", "Segoe UI", system-ui, sans-serif; }
+header { background: var(--navy); color: #fff; border-bottom: 4px solid var(--green); padding: 36px 20px 32px; }
+.wrap { max-width: 980px; margin-inline: auto; }
+h1 { margin: 0 0 8px; font: 700 clamp(2.2rem, 7vw, 3.4rem)/1 "Barlow Condensed", "Arial Narrow", sans-serif; text-transform: uppercase; }
+header p { margin: 0; color: #c9d8e6; max-width: 60ch; }
+main { padding: 32px 20px 56px; }
+ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 760px) { ol { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+a.card { display: grid; gap: 10px; height: 100%; padding: 22px; background: #fff; border: 1.5px solid var(--line); border-radius: 16px; text-decoration: none; color: inherit; transition: border-color .15s, transform .15s; }
+a.card:hover { border-color: var(--green); transform: translateY(-2px); }
+a.card:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
+.n { font: 700 2.6rem/1 "Barlow Condensed", "Arial Narrow", sans-serif; color: var(--green-d); }
+h2 { margin: 0; font: 700 1.5rem/1.1 "Barlow Condensed", "Arial Narrow", sans-serif; }
+.card p { margin: 0; color: var(--muted); }
+.go { margin-top: 6px; font-weight: 600; color: var(--green-d); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Modelos da landing page</h1>
+  <p>Três propostas para apresentar as novas categorias de vistoria de São Paulo aos clientes do VistoriaPro. Abra cada uma e compare.</p>
+</div></header>
+<main><div class="wrap">
+  <ol>
+    <li><a class="card" href="modelo-1/index.html"><span class="n">1</span><h2>Abas por categoria</h2><p>Topo azul com a grade de ícones e um painel abaixo. Categorias em abas.</p><span class="go">Abrir modelo 1</span></a></li>
+    <li><a class="card" href="modelo-2/index.html"><span class="n">2</span><h2>Ficha na mesma tela</h2><p>Tela do app ao lado de uma ficha que muda ao tocar no ícone. Azul do aplicativo.</p><span class="go">Abrir modelo 2</span></a></li>
+    <li><a class="card" href="modelo-3/index.html"><span class="n">3</span><h2>Tela por modalidade</h2><p>Cada ícone abre a tela própria da modalidade. Cores Compuletra.</p><span class="go">Abrir modelo 3</span></a></li>
+  </ol>
+</div></main>
+</body>
+</html>
