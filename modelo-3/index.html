@@ -488,8 +488,10 @@ footer a:hover { text-decoration: underline; }
     var W = 0, H = 0, nodes = [], traces = [], raf = 0, visible = true, timer = 0;
     function rand(s) { return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; }
     function build() {
-      var r = cv.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var r = cv.getBoundingClientRect();
       W = Math.max(1, r.width); H = Math.max(1, r.height);
+      /* nitidez total na tela do aparelho (celulares usam 3x), com teto de memória */
+      var dpr = Math.min(window.devicePixelRatio || 1, 3, Math.sqrt(8e6 / (W * H)));
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       var R = rand(seed), i, n = Math.round(Math.min(64, Math.max(8, W * H / 16000))), top = H < 420 ? 1 : .62;
@@ -577,10 +579,21 @@ footer a:hover { text-decoration: underline; }
         start();
       }).observe(cv);
     } else start();
+    /* redesenha sempre que o tamanho do topo muda (fontes carregando, barra do navegador, giro da tela);
+       sem isso o desenho antigo era esticado e ficava pixelado */
+    function refit() {
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        var r = cv.getBoundingClientRect();
+        if (Math.abs(r.width - W) > 1 || Math.abs(r.height - H) > 1) { build(); draw(); }
+      }, 120);
+    }
+    if ('ResizeObserver' in window) new ResizeObserver(refit).observe(cv);
     window.addEventListener('resize', function onR() {
       if (!cv.isConnected) { window.removeEventListener('resize', onR); return; }
-      clearTimeout(timer); timer = setTimeout(function () { build(); draw(); }, 150);
+      refit();
     });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);
   }
 
   /* navegação entre telas pelo endereço (#nome-da-modalidade) */
