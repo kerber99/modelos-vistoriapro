@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>try{var t=localStorage.getItem("vp-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <title>Modalidades VistoriaPro SP</title>
 <meta name="description" content="Veja em qual das três categorias de vistoria de São Paulo fica cada modalidade do aplicativo VistoriaPro.">
 <meta name="theme-color" content="#0b68b3">
@@ -11,7 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: faixa azul do app no topo; herói em duas colunas (título e ficha à esquerda, tela do app à direita);
-   categorias em linhas com placa veicular; treino rápido; rodapé azul. Página de tema único (claro), como o app. */
+   categorias em linhas com placa veicular; treino rápido; rodapé azul. Segue o tema do aparelho: claro ou escuro (a tela do app desenhada e as placas ficam sempre claras). */
 :root {
   --blue: #0b68b3;
   --blue-deep: #07416f;
@@ -34,10 +35,16 @@
   --no-tint: #fbeceb;
   --display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
   --body: "Barlow", "Segoe UI", system-ui, sans-serif;
+  --link: #0b68b3;
+  --iv-ink: #0b68b3;
+  --head: #131a22;
   color-scheme: light;
 }
+/* tema escuro: segue o aparelho e também a escolha explícita (data-theme) */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --blue-deep: #062e50; --blue-tint: #0f2a44; --paper: #0f1a26; --card: #142231; --ink: #e8eef5; --muted: #a3b1bf; --line: #2a3a4c; --ea-ink: #f2c14a; --sv-ink: #4cc38a; --iv-ink: #5aa8e8; --ok: #4cc38a; --ok-tint: #0f3123; --no: #ff8f86; --no-tint: #3b1714; --link: #6cb6ec; --head: #0a1119; --disc-a: #f4f5f8; --disc-b: #c9cfd8; color-scheme: dark; } }
+:root[data-theme="dark"] { --blue-deep: #062e50; --blue-tint: #0f2a44; --paper: #0f1a26; --card: #142231; --ink: #e8eef5; --muted: #a3b1bf; --line: #2a3a4c; --ea-ink: #f2c14a; --sv-ink: #4cc38a; --iv-ink: #5aa8e8; --ok: #4cc38a; --ok-tint: #0f3123; --no: #ff8f86; --no-tint: #3b1714; --link: #6cb6ec; --head: #0a1119; --disc-a: #f4f5f8; --disc-b: #c9cfd8; color-scheme: dark; }
 .ea { --c: var(--ea); --c-ink: var(--ea-ink); --c-on: #241a00; }
-.iv { --c: var(--iv); --c-ink: var(--iv); --c-on: #ffffff; }
+.iv { --c: var(--iv); --c-ink: var(--iv-ink); --c-on: #ffffff; }
 .sv { --c: var(--sv); --c-ink: var(--sv-ink); --c-on: #ffffff; }
 .none { --c: var(--line); --c-ink: var(--muted); --c-on: var(--muted); }
 
@@ -49,7 +56,7 @@ h1, h2, h3, h4, p { margin: 0; }
 h1, h2, h3 { text-wrap: balance; }
 a { color: inherit; }
 .wrap { max-width: 1160px; margin-inline: auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
-:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
 .ic { display: block; }
 .logo { display: block; height: 26px; width: auto; aspect-ratio: 2652 / 432; }
 
@@ -66,7 +73,7 @@ a { color: inherit; }
 .eyebrow { display: inline-flex; align-items: center; gap: 10px; font: 600 13px/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 .eyebrow b { font: 700 15px/1 var(--display); letter-spacing: .08em; color: var(--ink); border: 1.5px solid var(--ink); border-radius: 4px; padding: 2px 6px 3px; }
 h1 { font: 700 clamp(2.9rem, 9vw, 5.2rem)/.92 var(--display); text-transform: uppercase; margin: 14px 0 18px; }
-h1 em { font-style: normal; color: var(--blue); display: block; }
+h1 em { font-style: normal; color: var(--link); display: block; }
 .lead { font-size: clamp(1.05rem, 2.2vw, 1.2rem); line-height: 1.5; color: var(--muted); max-width: 50ch; }
 .legend { display: none; list-style: none; margin: 24px 0 0; padding: 0; gap: 10px; }
 .legend a { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; font: 500 16px/1.2 var(--body); }
@@ -77,7 +84,7 @@ h1 em { font-style: normal; color: var(--blue); display: block; }
 .stage { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
 @media (max-width: 919px) { .f { padding: 9px 14px 11px; } .f-desc small { display: none; } .doc-h { padding-block: 6px; } }
 .phone { border-radius: 22px; box-shadow: 0 0 0 1px var(--line), 0 20px 40px -30px rgba(7, 40, 72, .6); scroll-margin-top: 16px; }
-.screen { background: #fff; border-radius: 22px; overflow: hidden; }
+.screen { background: #fff; border-radius: 22px; overflow: hidden; --ink: #131a22; --muted: #56626f; --line: #dbe1e8; color: #131a22; color-scheme: light; }
 .app-bar { background: var(--blue); color: #fff; display: flex; align-items: center; gap: 20px; padding: 16px 20px; }
 .app-bar .logo { height: 22px; }
 .burger { flex: none; width: 24px; height: 17px; background: linear-gradient(#fff 0 0) top / 100% 3px no-repeat, linear-gradient(#fff 0 0) center / 100% 3px no-repeat, linear-gradient(#fff 0 0) bottom / 100% 3px no-repeat; }
@@ -97,7 +104,7 @@ h1 em { font-style: normal; color: var(--blue); display: block; }
 .hint { text-align: center; font-size: 14px; line-height: 1.35; color: var(--muted); padding: 6px 18px 20px; }
 
 /* placa: código da categoria no formato de placa veicular */
-.plate { display: inline-grid; flex: none; border: 2px solid var(--ink); border-radius: 7px; background: #fff; color: var(--ink); overflow: hidden; text-align: center; }
+.plate { display: inline-grid; flex: none; border: 2px solid #131a22; border-radius: 7px; background: #fff; color: #131a22; overflow: hidden; text-align: center; }
 .plate-band { background: var(--c); color: var(--c-on); font: 700 8.5px/1 var(--body); letter-spacing: .16em; text-transform: uppercase; padding: 3px 8px; }
 .plate-code { font: 700 26px/1 var(--display); letter-spacing: .06em; padding: 3px 10px 4px; white-space: nowrap; }
 .plate.sm { border-width: 1.5px; border-radius: 5px; }
@@ -108,7 +115,7 @@ h1 em { font-style: normal; color: var(--blue); display: block; }
 
 /* ficha de correspondência */
 .doc { background: var(--card); border: 1.5px solid var(--ink); border-radius: 14px; overflow: hidden; position: sticky; bottom: max(12px, env(safe-area-inset-bottom, 0px)); z-index: 5; box-shadow: 0 18px 36px -14px rgba(7, 40, 72, .5); }
-.doc-h { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 16px; background: var(--ink); color: #fff; font: 600 11.5px/1.2 var(--body); letter-spacing: .14em; text-transform: uppercase; }
+.doc-h { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 16px; background: var(--head); color: #fff; font: 600 11.5px/1.2 var(--body); letter-spacing: .14em; text-transform: uppercase; }
 .doc-b { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); }
 .f { padding: 11px 16px 13px; min-width: 0; }
 .f small { display: block; font: 600 11px/1.2 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
@@ -152,8 +159,8 @@ h2 { font: 700 clamp(2rem, 5.4vw, 3rem)/1 var(--display); text-transform: upperc
 .txt p { font-size: 1.05rem; line-height: 1.4; }
 .chip { all: unset; box-sizing: border-box; grid-column: 2; justify-self: start; margin-top: 8px; display: inline-flex; align-items: center; gap: 10px; padding: 5px 16px 5px 5px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); cursor: pointer; font: 600 15px/1.15 var(--body); transition: background .15s, border-color .15s; }
 .chip small { display: block; font: 500 10.5px/1.2 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-.chip:hover { border-color: var(--blue); background: var(--blue-tint); }
-.chip:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.chip:hover { border-color: var(--link); background: var(--blue-tint); }
+.chip:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 @media (min-width: 700px) {
   .svcs li { grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; }
   .chip { grid-column: 3; margin-top: 0; }
@@ -177,7 +184,7 @@ h2 { font: 700 clamp(2rem, 5.4vw, 3rem)/1 var(--display); text-transform: upperc
 .q-opts { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
 .opt { all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 12px; cursor: pointer; font: 600 15px/1.2 var(--body); transition: border-color .15s, background .15s; }
 .opt:hover:not(:disabled) { border-color: var(--ink); }
-.opt:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.opt:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 .opt:disabled { cursor: default; }
 .opt:disabled:not(.right):not(.wrong) { opacity: .45; }
 .opt.right { border-color: var(--ok); background: var(--ok-tint); }
@@ -216,6 +223,15 @@ footer a:hover { text-decoration: underline; }
   .swap > *, .swap .plate { animation: none; }
   .disc, .chip, .opt { transition: none; }
 }
+
+@media (max-width: 919px) { .f-desc { padding-right: 62px; } } /* espaço para o botão do canto sobre a ficha fixa */
+/* botão de modo claro/escuro no canto */
+.theme-toggle { position: fixed; right: max(14px, env(safe-area-inset-right, 0px)); bottom: max(14px, env(safe-area-inset-bottom, 0px)); z-index: 50; width: 42px; height: 42px; padding: 0; border-radius: 50%; display: grid; place-items: center; border: 1px solid rgba(255, 255, 255, .28); background: rgba(13, 27, 42, .84); color: #fff; cursor: pointer; box-shadow: 0 6px 16px -6px rgba(0, 0, 0, .55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: transform .15s; }
+.theme-toggle:hover { transform: scale(1.07); }
+.theme-toggle:focus-visible { outline: 3px solid #6cb6ec; outline-offset: 3px; }
+.theme-toggle svg { width: 20px; height: 20px; display: block; }
+.theme-toggle[data-tt="dark"] .tt-moon, .theme-toggle[data-tt="light"] .tt-sun { display: none; }
+@media (prefers-reduced-motion: reduce) { .theme-toggle { transition: none; } }
 </style>
 </head>
 <body>
@@ -457,6 +473,17 @@ footer a:hover { text-decoration: underline; }
 
   select('transferencia-fixa');
   renderQ(false);
+})();
+</script>
+<button type="button" class="theme-toggle" id="theme-toggle" title="Modo claro ou escuro" aria-label="Mudar para o modo escuro"><svg class="tt-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 13.2A8.5 8.5 0 1 1 10.8 3.5a6.6 6.6 0 0 0 9.7 9.7z" fill="currentColor"/></svg><svg class="tt-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.4" fill="currentColor"/><path d="M12 2.5v2.3M12 19.2v2.3M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.3M19.2 12h2.3M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+<script>
+(function () {
+  var b = document.getElementById("theme-toggle"), r = document.documentElement, mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  function cur() { return r.getAttribute("data-theme") || (mq && mq.matches ? "dark" : "light"); }
+  function paint() { var c = cur(); b.setAttribute("data-tt", c); b.setAttribute("aria-label", c === "dark" ? "Mudar para o modo claro" : "Mudar para o modo escuro"); }
+  b.addEventListener("click", function () { var n = cur() === "dark" ? "light" : "dark"; r.setAttribute("data-theme", n); try { localStorage.setItem("vp-theme", n); } catch (e) {} paint(); });
+  if (mq && mq.addEventListener) mq.addEventListener("change", paint);
+  paint();
 })();
 </script>
 </body>
