@@ -135,6 +135,20 @@ a { color: inherit; }
 .badge { position: absolute; top: -3px; right: -10px; padding: 4px 7px; border-radius: 999px; background: var(--c); color: #fff; font: 600 13px/1 var(--display); letter-spacing: .02em; white-space: nowrap; box-shadow: 0 0 0 2.5px #fff; }
 .disc.xl .badge { display: none; }
 .app-foot { display: flex; justify-content: space-between; gap: 10px; padding: 14px 18px 16px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); margin-top: 8px; }
+/* no celular, o aparelho desenhado fica menor e centralizado, para não ocupar a tela inteira */
+@media (max-width: 919px) {
+  .phone { width: min(100%, 300px); justify-self: center; border-radius: 26px; padding: 6px; }
+  .screen { border-radius: 21px; }
+  .app-bar { padding: 11px 14px; grid-template-columns: 20px 1fr 20px; }
+  .app-bar .logo { height: 17px; }
+  .burger { width: 18px; height: 13px; background-size: 100% 2px; }
+  #grid { padding: 16px 4px 4px; gap: 8px 0; }
+  .mod { gap: 6px; padding: 4px 1px; }
+  .mod .disc { width: 56px; }
+  .lbl { font-size: 12.5px; }
+  .badge { font-size: 11px; padding: 3px 5px; right: -9px; box-shadow: 0 0 0 2px #fff; }
+  .app-foot { padding: 10px 14px 12px; font-size: 12px; margin-top: 4px; }
+}
 
 @media (min-width: 920px) {
   .hero { grid-template-columns: minmax(0, 1fr) 380px; column-gap: 72px; padding-block: 40px 88px; align-items: center; }
