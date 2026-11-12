@@ -29,6 +29,9 @@ h2 { margin: 0; font: 700 1.5rem/1.1 "Barlow Condensed", "Arial Narrow", sans-se
 .card p { margin: 0; color: var(--muted); }
 .go { margin-top: 6px; font-weight: 600; color: var(--green-d); }
 
+/* troca de tema com transição suave, para a mudança ficar visível */
+html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transition: background-color .4s ease, color .4s ease, border-color .4s ease, fill .4s ease !important; }
+@media (prefers-reduced-motion: reduce) { html.theme-anim, html.theme-anim * { transition: none !important; } }
 /* botão de modo claro/escuro no canto */
 .theme-toggle { position: fixed; right: max(14px, env(safe-area-inset-right, 0px)); bottom: max(14px, env(safe-area-inset-bottom, 0px)); z-index: 50; width: 42px; height: 42px; padding: 0; border-radius: 50%; display: grid; place-items: center; border: 1px solid rgba(255, 255, 255, .28); background: rgba(13, 27, 42, .84); color: #fff; cursor: pointer; box-shadow: 0 6px 16px -6px rgba(0, 0, 0, .55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: transform .15s; }
 .theme-toggle:hover { transform: scale(1.07); }
@@ -56,7 +59,7 @@ h2 { margin: 0; font: 700 1.5rem/1.1 "Barlow Condensed", "Arial Narrow", sans-se
   var b = document.getElementById("theme-toggle"), r = document.documentElement, mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
   function cur() { return r.getAttribute("data-theme") || (mq && mq.matches ? "dark" : "light"); }
   function paint() { var c = cur(); b.setAttribute("data-tt", c); b.setAttribute("aria-label", c === "dark" ? "Mudar para o modo claro" : "Mudar para o modo escuro"); }
-  b.addEventListener("click", function () { var n = cur() === "dark" ? "light" : "dark"; r.setAttribute("data-theme", n); try { localStorage.setItem("vp-theme", n); } catch (e) {} paint(); });
+  b.addEventListener("click", function () { var n = cur() === "dark" ? "light" : "dark"; r.setAttribute("data-theme", n); r.classList.add("theme-anim"); clearTimeout(window.__tta); window.__tta = setTimeout(function () { r.classList.remove("theme-anim"); }, 500); try { localStorage.setItem("vp-theme", n); } catch (e) {} paint(); });
   if (mq && mq.addEventListener) mq.addEventListener("change", paint);
   paint();
 })();

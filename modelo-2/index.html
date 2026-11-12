@@ -38,11 +38,12 @@
   --link: #0b68b3;
   --iv-ink: #0b68b3;
   --head: #131a22;
+  --screen-bg: #ffffff;
   color-scheme: light;
 }
 /* tema escuro: segue o aparelho e também a escolha explícita (data-theme) */
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --blue-deep: #062e50; --blue-tint: #0f2a44; --paper: #0f1a26; --card: #142231; --ink: #e8eef5; --muted: #a3b1bf; --line: #2a3a4c; --ea-ink: #f2c14a; --sv-ink: #4cc38a; --iv-ink: #5aa8e8; --ok: #4cc38a; --ok-tint: #0f3123; --no: #ff8f86; --no-tint: #3b1714; --link: #6cb6ec; --head: #0a1119; --disc-a: #f4f5f8; --disc-b: #c9cfd8; color-scheme: dark; } }
-:root[data-theme="dark"] { --blue-deep: #062e50; --blue-tint: #0f2a44; --paper: #0f1a26; --card: #142231; --ink: #e8eef5; --muted: #a3b1bf; --line: #2a3a4c; --ea-ink: #f2c14a; --sv-ink: #4cc38a; --iv-ink: #5aa8e8; --ok: #4cc38a; --ok-tint: #0f3123; --no: #ff8f86; --no-tint: #3b1714; --link: #6cb6ec; --head: #0a1119; --disc-a: #f4f5f8; --disc-b: #c9cfd8; color-scheme: dark; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --blue-deep: #062e50; --blue-tint: #0f2a44; --paper: #0f1a26; --card: #142231; --ink: #e8eef5; --muted: #a3b1bf; --line: #2a3a4c; --ea-ink: #f2c14a; --sv-ink: #4cc38a; --iv-ink: #5aa8e8; --ok: #4cc38a; --ok-tint: #0f3123; --no: #ff8f86; --no-tint: #3b1714; --link: #6cb6ec; --head: #0a1119; --screen-bg: #0f1c2a; --disc-a: #f4f5f8; --disc-b: #c9cfd8; color-scheme: dark; } }
+:root[data-theme="dark"] { --blue-deep: #062e50; --blue-tint: #0f2a44; --paper: #0f1a26; --card: #142231; --ink: #e8eef5; --muted: #a3b1bf; --line: #2a3a4c; --ea-ink: #f2c14a; --sv-ink: #4cc38a; --iv-ink: #5aa8e8; --ok: #4cc38a; --ok-tint: #0f3123; --no: #ff8f86; --no-tint: #3b1714; --link: #6cb6ec; --head: #0a1119; --screen-bg: #0f1c2a; --disc-a: #f4f5f8; --disc-b: #c9cfd8; color-scheme: dark; }
 .ea { --c: var(--ea); --c-ink: var(--ea-ink); --c-on: #241a00; }
 .iv { --c: var(--iv); --c-ink: var(--iv-ink); --c-on: #ffffff; }
 .sv { --c: var(--sv); --c-ink: var(--sv-ink); --c-on: #ffffff; }
@@ -84,7 +85,7 @@ h1 em { font-style: normal; color: var(--link); display: block; }
 .stage { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
 @media (max-width: 919px) { .f { padding: 9px 14px 11px; } .f-desc small { display: none; } .doc-h { padding-block: 6px; } }
 .phone { border-radius: 22px; box-shadow: 0 0 0 1px var(--line), 0 20px 40px -30px rgba(7, 40, 72, .6); scroll-margin-top: 16px; }
-.screen { background: #fff; border-radius: 22px; overflow: hidden; --ink: #131a22; --muted: #56626f; --line: #dbe1e8; color: #131a22; color-scheme: light; }
+.screen { background: var(--screen-bg); border-radius: 22px; overflow: hidden; }
 .app-bar { background: var(--blue); color: #fff; display: flex; align-items: center; gap: 20px; padding: 16px 20px; }
 .app-bar .logo { height: 22px; }
 .burger { flex: none; width: 24px; height: 17px; background: linear-gradient(#fff 0 0) top / 100% 3px no-repeat, linear-gradient(#fff 0 0) center / 100% 3px no-repeat, linear-gradient(#fff 0 0) bottom / 100% 3px no-repeat; }
@@ -97,10 +98,10 @@ h1 em { font-style: normal; color: var(--link); display: block; }
 .disc.xs { width: 36px; box-shadow: 0 2px 4px -2px rgba(19, 26, 34, .4), inset 0 1px 0 #fff; }
 .mod:hover .disc { transform: translateY(-2px); }
 .mod:active .disc { transform: scale(.94); }
-.mod[aria-pressed="true"] .disc { box-shadow: 0 0 0 3px #fff, 0 0 0 6px var(--blue), 0 10px 14px -4px rgba(11, 104, 179, .55); }
+.mod[aria-pressed="true"] .disc { box-shadow: 0 0 0 3px var(--screen-bg), 0 0 0 6px var(--blue), 0 10px 14px -4px rgba(11, 104, 179, .55); }
 .lbl { font-size: 14.5px; line-height: 1.2; max-width: 11ch; min-height: 2.4em; }
-.mod[aria-pressed="true"] .lbl { color: var(--blue); font-weight: 600; }
-.badge { position: absolute; top: -4px; right: -12px; padding: 3px 7px 4px; border-radius: 999px; background: var(--c); color: var(--c-on); font: 700 13px/1 var(--display); letter-spacing: .05em; white-space: nowrap; box-shadow: 0 0 0 2px #fff; }
+.mod[aria-pressed="true"] .lbl { color: var(--link); font-weight: 600; }
+.badge { position: absolute; top: -4px; right: -12px; padding: 3px 7px 4px; border-radius: 999px; background: var(--c); color: var(--c-on); font: 700 13px/1 var(--display); letter-spacing: .05em; white-space: nowrap; box-shadow: 0 0 0 2px var(--screen-bg); }
 .hint { text-align: center; font-size: 14px; line-height: 1.35; color: var(--muted); padding: 6px 18px 20px; }
 
 /* placa: código da categoria no formato de placa veicular */
@@ -225,6 +226,9 @@ footer a:hover { text-decoration: underline; }
 }
 
 @media (max-width: 919px) { .f-desc { padding-right: 62px; } } /* espaço para o botão do canto sobre a ficha fixa */
+/* troca de tema com transição suave, para a mudança ficar visível */
+html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transition: background-color .4s ease, color .4s ease, border-color .4s ease, fill .4s ease !important; }
+@media (prefers-reduced-motion: reduce) { html.theme-anim, html.theme-anim * { transition: none !important; } }
 /* botão de modo claro/escuro no canto */
 .theme-toggle { position: fixed; right: max(14px, env(safe-area-inset-right, 0px)); bottom: max(14px, env(safe-area-inset-bottom, 0px)); z-index: 50; width: 42px; height: 42px; padding: 0; border-radius: 50%; display: grid; place-items: center; border: 1px solid rgba(255, 255, 255, .28); background: rgba(13, 27, 42, .84); color: #fff; cursor: pointer; box-shadow: 0 6px 16px -6px rgba(0, 0, 0, .55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: transform .15s; }
 .theme-toggle:hover { transform: scale(1.07); }
@@ -481,7 +485,7 @@ footer a:hover { text-decoration: underline; }
   var b = document.getElementById("theme-toggle"), r = document.documentElement, mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
   function cur() { return r.getAttribute("data-theme") || (mq && mq.matches ? "dark" : "light"); }
   function paint() { var c = cur(); b.setAttribute("data-tt", c); b.setAttribute("aria-label", c === "dark" ? "Mudar para o modo claro" : "Mudar para o modo escuro"); }
-  b.addEventListener("click", function () { var n = cur() === "dark" ? "light" : "dark"; r.setAttribute("data-theme", n); try { localStorage.setItem("vp-theme", n); } catch (e) {} paint(); });
+  b.addEventListener("click", function () { var n = cur() === "dark" ? "light" : "dark"; r.setAttribute("data-theme", n); r.classList.add("theme-anim"); clearTimeout(window.__tta); window.__tta = setTimeout(function () { r.classList.remove("theme-anim"); }, 500); try { localStorage.setItem("vp-theme", n); } catch (e) {} paint(); });
   if (mq && mq.addEventListener) mq.addEventListener("change", paint);
   paint();
 })();

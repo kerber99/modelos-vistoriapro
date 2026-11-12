@@ -36,17 +36,20 @@
   --disc-b: #c6cfdc;
   --disc-ink: #111111;
   --foot: #061f38;
+  --top-bg: radial-gradient(640px 340px at 6% 100%, rgba(0, 166, 81, .34), transparent 70%), radial-gradient(760px 420px at 92% 0%, rgba(56, 200, 255, .28), transparent 65%), linear-gradient(165deg, var(--navy) 0%, #0a3560 70%, #0b4a86 100%);
+  --tab-bg: #ffffff;
+  --tab-logo: var(--brand);
   --font-display: "Sora", "Segoe UI", system-ui, sans-serif;
   --font-body: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #08121e; --bg-2: #0c1a2a; --card: #112338; --ink: #e8f0f8; --muted: #9fb2c6; --line: #22364d; --eyebrow: #5bc388;
   --c-estrutura: #f59a3d; --c-identificacao: #4fa6ea; --c-seguranca: #5bc388;
-  --tint-estrutura: #2a1d10; --tint-identificacao: #0f2a42; --tint-seguranca: #0e2c22; color-scheme: dark; } }
+  --tint-estrutura: #2a1d10; --tint-identificacao: #0f2a42; --tint-seguranca: #0e2c22; --top-bg: radial-gradient(640px 340px at 6% 100%, rgba(0, 166, 81, .2), transparent 70%), radial-gradient(760px 420px at 92% 0%, rgba(56, 200, 255, .14), transparent 65%), linear-gradient(165deg, #020a14 0%, #061a2e 70%, #0a2945 100%); --tab-bg: #0f2236; --tab-logo: #ffffff; color-scheme: dark; } }
 :root[data-theme="dark"] {
   --bg: #08121e; --bg-2: #0c1a2a; --card: #112338; --ink: #e8f0f8; --muted: #9fb2c6; --line: #22364d; --eyebrow: #5bc388;
   --c-estrutura: #f59a3d; --c-identificacao: #4fa6ea; --c-seguranca: #5bc388;
-  --tint-estrutura: #2a1d10; --tint-identificacao: #0f2a42; --tint-seguranca: #0e2c22; color-scheme: dark; }
+  --tint-estrutura: #2a1d10; --tint-identificacao: #0f2a42; --tint-seguranca: #0e2c22; --top-bg: radial-gradient(640px 340px at 6% 100%, rgba(0, 166, 81, .2), transparent 70%), radial-gradient(760px 420px at 92% 0%, rgba(56, 200, 255, .14), transparent 65%), linear-gradient(165deg, #020a14 0%, #061a2e 70%, #0a2945 100%); --tab-bg: #0f2236; --tab-logo: #ffffff; color-scheme: dark; }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -60,10 +63,11 @@ p { margin: 0; }
 .ic { display: block; }
 
 /* topo */
-.top { background: radial-gradient(640px 340px at 6% 100%, rgba(0, 166, 81, .34), transparent 70%), radial-gradient(760px 420px at 92% 0%, rgba(56, 200, 255, .28), transparent 65%), linear-gradient(165deg, var(--navy) 0%, #0a3560 70%, #0b4a86 100%); color: #fff; position: relative; overflow: hidden; padding-bottom: clamp(40px, 7vw, 80px); }
+.top { background: var(--top-bg); color: #fff; position: relative; overflow: hidden; padding-bottom: clamp(40px, 7vw, 80px); }
 .top::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.22) 1px, transparent 1.4px); background-size: 26px 26px; mask-image: linear-gradient(180deg, #000 0%, transparent 80%); -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 80%); pointer-events: none; }
-.tab { position: relative; z-index: 1; display: grid; place-items: center; width: min(86%, 440px); margin-inline: auto; padding: 24px 24px 28px; background: #fff; border-radius: 0 0 34px 34px; box-shadow: 0 22px 44px -14px rgba(0, 20, 50, .55); }
+.tab { position: relative; z-index: 1; display: grid; place-items: center; width: min(86%, 440px); margin-inline: auto; padding: 24px 24px 28px; background: var(--tab-bg); border-radius: 0 0 34px 34px; box-shadow: 0 22px 44px -14px rgba(0, 20, 50, .55); }
 .logo { width: clamp(170px, 46vw, 240px); height: auto; color: var(--brand); display: block; }
+.tab .logo { color: var(--tab-logo); }
 .hero { position: relative; text-align: center; justify-items: center; padding-block: clamp(44px, 7vw, 84px) 36px; display: grid; gap: 14px; }
 .eyebrow { display: inline-flex; align-items: center; gap: 8px; font: 600 12.5px/1 var(--font-body); letter-spacing: .12em; text-transform: uppercase; color: #bff0d5; padding: 9px 14px; border-radius: 999px; background: rgba(0, 166, 81, .18); border: 1px solid rgba(91, 195, 136, .45); margin-bottom: 8px; backdrop-filter: blur(6px); }
 .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green-l); box-shadow: 0 0 0 4px rgba(91, 195, 136, .25); }
@@ -174,6 +178,9 @@ footer b { color: #fff; font-weight: 600; user-select: all; }
 body { margin: 0; -webkit-text-size-adjust: 100%; }
 img { max-width: 100%; }
 
+/* troca de tema com transição suave, para a mudança ficar visível */
+html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after { transition: background-color .4s ease, color .4s ease, border-color .4s ease, fill .4s ease !important; }
+@media (prefers-reduced-motion: reduce) { html.theme-anim, html.theme-anim * { transition: none !important; } }
 /* botão de modo claro/escuro no canto */
 .theme-toggle { position: fixed; right: max(14px, env(safe-area-inset-right, 0px)); bottom: max(14px, env(safe-area-inset-bottom, 0px)); z-index: 50; width: 42px; height: 42px; padding: 0; border-radius: 50%; display: grid; place-items: center; border: 1px solid rgba(255, 255, 255, .28); background: rgba(13, 27, 42, .84); color: #fff; cursor: pointer; box-shadow: 0 6px 16px -6px rgba(0, 0, 0, .55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: transform .15s; }
 .theme-toggle:hover { transform: scale(1.07); }
@@ -313,7 +320,7 @@ img { max-width: 100%; }
   var b = document.getElementById("theme-toggle"), r = document.documentElement, mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
   function cur() { return r.getAttribute("data-theme") || (mq && mq.matches ? "dark" : "light"); }
   function paint() { var c = cur(); b.setAttribute("data-tt", c); b.setAttribute("aria-label", c === "dark" ? "Mudar para o modo claro" : "Mudar para o modo escuro"); }
-  b.addEventListener("click", function () { var n = cur() === "dark" ? "light" : "dark"; r.setAttribute("data-theme", n); try { localStorage.setItem("vp-theme", n); } catch (e) {} paint(); });
+  b.addEventListener("click", function () { var n = cur() === "dark" ? "light" : "dark"; r.setAttribute("data-theme", n); r.classList.add("theme-anim"); clearTimeout(window.__tta); window.__tta = setTimeout(function () { r.classList.remove("theme-anim"); }, 500); try { localStorage.setItem("vp-theme", n); } catch (e) {} paint(); });
   if (mq && mq.addEventListener) mq.addEventListener("change", paint);
   paint();
 })();
