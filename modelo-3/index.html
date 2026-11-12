@@ -77,9 +77,9 @@ a { color: inherit; }
 
 /* herói */
 .hero-band { position: relative; color: #fff; background: linear-gradient(160deg, #063a63 0%, #005a96 48%, #0072ba 100%); }
-/* textura do site VistoriaPro: grade de 60px que some nas bordas + brilho azul */
+/* textura: rede de pontos e trilhas de circuito desenhadas em canvas + brilho azul */
 .hero-band, .d-hero { position: relative; isolation: isolate; }
-.hero-band::before, .d-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background-image: linear-gradient(rgba(255, 255, 255, .1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .1) 1px, transparent 1px); background-size: 60px 60px; background-position: center top; -webkit-mask-image: radial-gradient(85% 75% at 60% 45%, #000 25%, transparent 85%); mask-image: radial-gradient(85% 75% at 60% 45%, #000 25%, transparent 85%); }
+.fx { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; -webkit-mask-image: linear-gradient(100deg, rgba(0,0,0,.35) 0%, #000 55%); mask-image: linear-gradient(100deg, rgba(0,0,0,.35) 0%, #000 55%); }
 .hero-band::after, .d-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(520px 420px at 78% 42%, rgba(40, 160, 235, .28), transparent 70%); }
 .d-hero::after { background: radial-gradient(480px 300px at 85% 30%, rgba(40, 160, 235, .25), transparent 70%); }
 .hero-band .kick { color: #cfe6f7; }
@@ -294,7 +294,7 @@ footer a:hover { text-decoration: underline; }
 
 <div id="home" class="view">
 <main>
-  <div class="hero-band">
+  <div class="hero-band"><canvas class="fx" aria-hidden="true"></canvas>
   <header class="top wrap">
     <div class="tab"><svg class="logo" viewBox="0 0 2652 432" role="img" aria-label="VistoriaPro"><use href="#logo"/></svg></div>
     <nav aria-label="Seções"><a href="#categorias">Categorias</a><a href="#treino">Treino</a></nav>
@@ -456,7 +456,7 @@ footer a:hover { text-decoration: underline; }
     var cat = m.c ? CATS[m.c] : null;
     var prev = MODS[(m.i + MODS.length - 1) % MODS.length], next = MODS[(m.i + 1) % MODS.length];
     var h = '<div class="d-bar"><div class="wrap"><a class="back" href="#inicio">' + sym('chev') + 'Modalidades</a><span class="mono">' + (m.i + 1) + ' de ' + MODS.length + '</span></div></div>';
-    h += '<header class="d-hero"><div class="wrap d-hero-in"><span class="disc xl">' + ic(m.s) + '</span><div>' +
+    h += '<header class="d-hero"><canvas class="fx" aria-hidden="true"></canvas><div class="wrap d-hero-in"><span class="disc xl">' + ic(m.s) + '</span><div>' +
       '<p class="kick">Modalidade do aplicativo</p>' +
       '<h1 id="d-title" tabindex="-1">' + m.n + '</h1>' +
       '<p class="d-now">' + (cat ? 'Agora em ' + tag(m.c, m.k) + '<strong>' + cat.name + ' - ' + m.k + '</strong>' : '<span class="tag none"><b>—</b></span>Categoria ainda não informada') + '</p>' +
@@ -481,6 +481,108 @@ footer a:hover { text-decoration: underline; }
     $('detalhe').innerHTML = h;
   }
 
+  /* fundo tecnológico: rede de pontos conectados no alto e trilhas de circuito com pulsos de luz embaixo */
+  function techBg(cv, seed) {
+    var ctx = cv.getContext && cv.getContext('2d');
+    if (!ctx) return;
+    var W = 0, H = 0, nodes = [], traces = [], raf = 0, visible = true, timer = 0;
+    function rand(s) { return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; }
+    function build() {
+      var r = cv.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = Math.max(1, r.width); H = Math.max(1, r.height);
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var R = rand(seed), i, n = Math.round(Math.min(64, Math.max(8, W * H / 16000))), top = H < 420 ? 1 : .62;
+      nodes = [];
+      for (i = 0; i < n; i++) nodes.push({ x: R() * W, y: R() * H * top, vx: (R() - .5) * .18, vy: (R() - .5) * .12, r: R() * 1.3 + .7 });
+      traces = [];
+      var step = 22, count = Math.round(Math.min(46, Math.max(8, W * H / 12000)));
+      for (i = 0; i < count; i++) {
+        var x = Math.round(R() * W / step) * step, y = H - Math.round(R() * H * .42 / step) * step;
+        var pts = [[x, y]], dir = R() < .5 ? -1 : 1, seg = 2 + Math.floor(R() * 3);
+        for (var k = 0; k < seg; k++) {
+          var len = step * (2 + Math.floor(R() * 7));
+          if (k % 2 === 0) x += dir * len; else { var d = step * (1 + Math.floor(R() * 3)); x += dir * d; y -= d; }
+          pts.push([x, y]);
+        }
+        var L = 0;
+        for (k = 1; k < pts.length; k++) L += Math.hypot(pts[k][0] - pts[k - 1][0], pts[k][1] - pts[k - 1][1]);
+        traces.push({ p: pts, len: L, a: .12 + R() * .2, teal: R() < .3, t: R(), v: .0015 + R() * .003, pulse: R() < .55 });
+      }
+    }
+    function at(tr, t) {
+      var d = t * tr.len, p = tr.p;
+      for (var k = 1; k < p.length; k++) {
+        var s = Math.hypot(p[k][0] - p[k - 1][0], p[k][1] - p[k - 1][1]);
+        if (d <= s) { var f = s ? d / s : 0; return [p[k - 1][0] + (p[k][0] - p[k - 1][0]) * f, p[k - 1][1] + (p[k][1] - p[k - 1][1]) * f]; }
+        d -= s;
+      }
+      return p[p.length - 1];
+    }
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      var i, j, tr, c;
+      ctx.lineWidth = 1;
+      for (i = 0; i < traces.length; i++) {
+        tr = traces[i]; c = tr.teal ? '80,230,190' : '95,205,255';
+        ctx.strokeStyle = 'rgba(' + c + ',' + tr.a + ')';
+        ctx.beginPath(); ctx.moveTo(tr.p[0][0], tr.p[0][1]);
+        for (j = 1; j < tr.p.length; j++) ctx.lineTo(tr.p[j][0], tr.p[j][1]);
+        ctx.stroke();
+        var e = tr.p[tr.p.length - 1];
+        ctx.fillStyle = 'rgba(' + c + ',' + (tr.a + .15) + ')';
+        ctx.beginPath(); ctx.arc(e[0], e[1], 2.2, 0, 6.283); ctx.fill();
+        if (tr.pulse) {
+          var q = at(tr, tr.t);
+          ctx.fillStyle = 'rgba(' + c + ',.9)';
+          ctx.shadowColor = 'rgba(' + c + ',1)'; ctx.shadowBlur = 10;
+          ctx.beginPath(); ctx.arc(q[0], q[1], 1.8, 0, 6.283); ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      }
+      var max = Math.min(150, Math.max(100, W / 9));
+      for (i = 0; i < nodes.length; i++) {
+        for (j = i + 1; j < nodes.length; j++) {
+          var dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y, d = Math.sqrt(dx * dx + dy * dy);
+          if (d < max) {
+            ctx.strokeStyle = 'rgba(170,225,255,' + ((1 - d / max) * .32).toFixed(3) + ')';
+            ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke();
+          }
+        }
+      }
+      for (i = 0; i < nodes.length; i++) {
+        ctx.fillStyle = 'rgba(200,238,255,.85)';
+        ctx.beginPath(); ctx.arc(nodes[i].x, nodes[i].y, nodes[i].r, 0, 6.283); ctx.fill();
+      }
+    }
+    function tick() {
+      if (!visible || !cv.isConnected) { raf = 0; return; }
+      for (var i = 0; i < nodes.length; i++) {
+        var nd = nodes[i]; nd.x += nd.vx; nd.y += nd.vy;
+        if (nd.x < 0 || nd.x > W) nd.vx *= -1;
+        if (nd.y < 0 || nd.y > H * (H < 420 ? 1 : .62)) nd.vy *= -1;
+      }
+      for (i = 0; i < traces.length; i++) { traces[i].t += traces[i].v; if (traces[i].t > 1) traces[i].t = 0; }
+      draw();
+      raf = requestAnimationFrame(tick);
+    }
+    function start() { if (calm) { draw(); return; } if (!raf) raf = requestAnimationFrame(tick); }
+    build(); draw();
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) {
+        visible = en[0].isIntersecting;
+        if (!visible) return;
+        var r = cv.getBoundingClientRect();
+        if (Math.abs(r.width - W) > 2 || Math.abs(r.height - H) > 2) { build(); draw(); }
+        start();
+      }).observe(cv);
+    } else start();
+    window.addEventListener('resize', function onR() {
+      if (!cv.isConnected) { window.removeEventListener('resize', onR); return; }
+      clearTimeout(timer); timer = setTimeout(function () { build(); draw(); }, 150);
+    });
+  }
+
   /* navegação entre telas pelo endereço (#nome-da-modalidade) */
   var home = $('home'), det = $('detalhe'), lastY = 0, lastSlug = null;
   function play(el, backwards) {
@@ -498,6 +600,7 @@ footer a:hover { text-decoration: underline; }
       lastSlug = m.s;
       renderDetail(m);
       home.hidden = true; det.hidden = false;
+      techBg(det.querySelector('.fx'), 1000 + m.i * 97);
       play(det, false);
       window.scrollTo(0, 0);
       document.title = m.n + ' · ' + BASE_TITLE;
@@ -562,6 +665,7 @@ footer a:hover { text-decoration: underline; }
     if (q === 'restart') { qi = 0; score = 0; renderQ(true); }
   });
 
+  techBg(document.querySelector('.hero-band .fx'), 2024);
   renderQ(false);
   route();
 })();
