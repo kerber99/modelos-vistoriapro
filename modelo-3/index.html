@@ -79,6 +79,8 @@ a { color: inherit; }
 .hero-band { position: relative; color: #fff; background: linear-gradient(160deg, #063a63 0%, #005a96 48%, #0072ba 100%); }
 /* textura: rede de pontos e trilhas de circuito desenhadas em canvas + brilho azul */
 .hero-band, .d-hero { position: relative; isolation: isolate; }
+/* granulado bem fino por cima do degradê: evita as faixas (efeito escada) que o azul escuro forma em monitores grandes */
+.hero-band::before, .d-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 160px 160px; opacity: .07; mix-blend-mode: soft-light; }
 .fx { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; -webkit-mask-image: linear-gradient(100deg, rgba(0,0,0,.35) 0%, #000 55%); mask-image: linear-gradient(100deg, rgba(0,0,0,.35) 0%, #000 55%); }
 .hero-band::after, .d-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(520px 420px at 78% 42%, rgba(40, 160, 235, .28), transparent 70%); }
 .d-hero::after { background: radial-gradient(480px 300px at 85% 30%, rgba(40, 160, 235, .25), transparent 70%); }
@@ -490,8 +492,8 @@ footer a:hover { text-decoration: underline; }
     function build() {
       var r = cv.getBoundingClientRect();
       W = Math.max(1, r.width); H = Math.max(1, r.height);
-      /* nitidez total na tela do aparelho (celulares usam 3x), com teto de memória */
-      var dpr = Math.min(window.devicePixelRatio || 1, 3, Math.sqrt(8e6 / (W * H)));
+      /* nitidez: no mínimo 2x (suaviza as linhas finas em monitores comuns), até 3x em celulares, com teto de memória */
+      var dpr = Math.min(Math.max(window.devicePixelRatio || 1, 2), 3, Math.sqrt(8e6 / (W * H)));
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       var R = rand(seed), i, n = Math.round(Math.min(64, Math.max(8, W * H / 16000))), top = H < 420 ? 1 : .62;
